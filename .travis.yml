@@ -1,0 +1,27 @@
+branches:
+  only:
+  - master
+language: android
+jdk: oraclejdk8
+before_cache:
+- rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+cache:
+  directories:
+  - "$HOME/.m2"
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper"
+android:
+  components:
+  - tools
+  - platform-tools
+  - build-tools-26.0.2
+  - android-26
+before_install:
+- rvm get stable
+- rvm use ruby --install --default
+- bundle install
+- git fetch origin master
+jobs:
+  include:
+  - stage: Build and test project
+    script: "./gradlew check --profile"
